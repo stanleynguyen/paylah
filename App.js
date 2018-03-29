@@ -1,23 +1,27 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { SwitchNavigator } from 'react-navigation';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
-}
+import {
+  Home,
+  Bill,
+  BillConfirmation,
+  BillDone,
+  Pay,
+  PayConfirmation,
+  PayDone,
+  Request,
+} from './screens';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const App = SwitchNavigator({
+  Home: { screen: Home },
+  Bill: { screen: Bill },
+  BillConfirmation: { screen: BillConfirmation },
+  BillDone: { screen: BillDone },
+  Pay: { screen: Pay },
+  PayConfirmation: { screen: PayConfirmation },
+  PayDone: { screen: PayDone },
+  Request: { screen: Request },
 });
+
+export default App;
