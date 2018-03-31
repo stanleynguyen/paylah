@@ -28,7 +28,13 @@ export default class Bill extends React.Component {
     );
     this.setState({ [field]: text, btnDisabled });
   };
-  messageFocus = input => {
+  payeeFocus = () => {
+    this.payeeInput.focus();
+  };
+  amountFocus = () => {
+    this.amountInput.focus();
+  };
+  messageFocus = () => {
     this.messageInput.focus();
   };
   render() {
@@ -39,7 +45,8 @@ export default class Bill extends React.Component {
           <View
             style={InputGroupStyles.inputgroup}
             accessible={true}
-            accessibilityLabel="Choose Payee"
+            accessibilityLabel="Choose payee"
+            onPress={this.payeeFocus}
           >
             <SimpleLineIcons
               name="user"
@@ -50,12 +57,14 @@ export default class Bill extends React.Component {
               placeholder="Pay To (max 5)"
               style={InputGroupStyles.input}
               underlineColorAndroid={'transparent'}
+              ref={i => (this.payeeInput = i)}
             />
           </View>
           <View
             style={InputGroupStyles.inputgroup}
             accessible={true}
             accessibilityLabel="Amount"
+            onPress={this.amountFocus}
           >
             <MaterialIcons
               name="attach-money"
@@ -76,7 +85,8 @@ export default class Bill extends React.Component {
           <View
             style={InputGroupStyles.inputgroup}
             accessible={true}
-            accessibilityLabel="Type A Message"
+            accessibilityLabel="Type a message"
+            onPress={this.messageFocus}
           >
             <Feather
               name="message-square"
@@ -90,6 +100,7 @@ export default class Bill extends React.Component {
               value={this.state.message}
               onChangeText={t => this.onInputChage(t, 'message')}
               ref={i => (this.messageInput = i)}
+              accessible={false}
             />
           </View>
         </View>
@@ -100,7 +111,10 @@ export default class Bill extends React.Component {
           ]}
           disabled={this.state.btnDisabled}
           accessible={true}
-          accessibilityLabel="Review"
+          accessibilityLabel={`${
+            this.state.btnDisabled ? 'Disabled' : ''
+          } Review`}
+          accessibilityComponentType="button"
           onPress={() => {
             console.log('press review');
           }}
