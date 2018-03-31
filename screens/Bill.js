@@ -12,9 +12,25 @@ import {
   ButtonStyles,
 } from '../components/CommonStyles';
 import { SimpleLineIcons, MaterialIcons, Feather } from '@expo/vector-icons';
-import { RED } from '../constants/colors';
+import { GREY } from '../constants/colors';
 
 export default class Bill extends React.Component {
+  state = {
+    amount: '',
+    message: '',
+    btnDisabled: true,
+  };
+
+  onInputChage = (text, field) => {
+    const btnDisabled = !(
+      (this.state.amount !== '' && field === 'message' && text !== '') ||
+      (this.state.message !== '' && field === 'amount' && text !== '')
+    );
+    this.setState({ [field]: text, btnDisabled });
+  };
+  messageFocus = input => {
+    this.messageInput.focus();
+  };
   render() {
     const { navigate, state } = this.props.navigation;
     return (
@@ -51,6 +67,10 @@ export default class Bill extends React.Component {
               style={InputGroupStyles.input}
               underlineColorAndroid={'transparent'}
               keyboardType="numeric"
+              value={this.state.amount}
+              onChangeText={t => this.onInputChage(t, 'amount')}
+              ref={i => (this.amountInput = i)}
+              onSubmitEditing={this.messageFocus}
             />
           </View>
           <View
@@ -67,11 +87,18 @@ export default class Bill extends React.Component {
               placeholder="Message"
               style={InputGroupStyles.input}
               underlineColorAndroid={'transparent'}
+              value={this.state.message}
+              onChangeText={t => this.onInputChage(t, 'message')}
+              ref={i => (this.messageInput = i)}
             />
           </View>
         </View>
         <TouchableOpacity
-          style={ButtonStyles.reviewbtn}
+          style={[
+            ButtonStyles.reviewbtn,
+            this.state.btnDisabled ? { backgroundColor: GREY } : {},
+          ]}
+          disabled={this.state.btnDisabled}
           accessible={true}
           accessibilityLabel="Review"
           onPress={() => {
