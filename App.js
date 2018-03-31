@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { SwitchNavigator } from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 
 import {
   Home,
@@ -12,10 +12,16 @@ import {
   PayDone,
   Request,
 } from './screens';
+import { Header as BillHeader } from './screens/Bill';
 
-const App = SwitchNavigator({
+const App = StackNavigator({
   Home: { screen: Home },
-  Bill: { screen: Bill },
+  Bill: {
+    screen: Bill,
+    navigationOptions: {
+      header: <BillHeader />,
+    },
+  },
   BillConfirmation: { screen: BillConfirmation },
   BillDone: { screen: BillDone },
   Pay: { screen: Pay },

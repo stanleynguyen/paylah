@@ -14,30 +14,30 @@ export default class Home extends React.Component {
         <Button
           title="To Bill Confirmation Page"
           onPress={() =>
-            navigate('BillConfirmatio ', { pagename: 'Bill Confirmation Page' })
+            navigate('BillConfirmation', { pagename: 'Bill Confirmation Page' })
           }
         />
         <Button
           title="To Bill Done Page"
-          onPress={() => navigate('Bill', { pagename: 'Bill Done Page' })}
+          onPress={() => navigate('BillDone', { pagename: 'Bill Done Page' })}
         />
         <Button
           title="To Pay Page"
-          onPress={() => navigate('Bill', { pagename: 'Pay Page' })}
+          onPress={() => navigate('Pay', { pagename: 'Pay Page' })}
         />
         <Button
           title="To Pay Confirmation Page"
           onPress={() =>
-            navigate('Bill', { pagename: 'Pay Confirmation Page' })
+            navigate('PayConfirmation', { pagename: 'Pay Confirmation Page' })
           }
         />
         <Button
           title="To Pay Done Page"
-          onPress={() => navigate('Bill', { pagename: 'Pay Done Page' })}
+          onPress={() => navigate('PayDone', { pagename: 'Pay Done Page' })}
         />
         <Button
           title="To Request Page"
-          onPress={() => navigate('Bill', { pagename: 'Request Page' })}
+          onPress={() => navigate('Request', { pagename: 'Request Page' })}
         />
       </View>
     );
