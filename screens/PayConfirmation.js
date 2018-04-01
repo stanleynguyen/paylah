@@ -66,6 +66,7 @@ export default class PayConfirmation extends React.Component {
           accessible={true}
           accessibilityLabel="Confirm"
           accessibilityComponentType="button"
+          onPress={() => navigate('PayDone')}
         >
           <Text style={ButtonStyles.text}>CONFIRM</Text>
         </TouchableOpacity>

@@ -26,16 +26,6 @@ export default class Home extends React.Component {
           onPress={() => navigate('Pay', { pagename: 'Pay Page' })}
         />
         <Button
-          title="To Pay Confirmation Page"
-          onPress={() =>
-            navigate('PayConfirmation', { pagename: 'Pay Confirmation Page' })
-          }
-        />
-        <Button
-          title="To Pay Done Page"
-          onPress={() => navigate('PayDone', { pagename: 'Pay Done Page' })}
-        />
-        <Button
           title="To Request Page"
           onPress={() => navigate('Request', { pagename: 'Request Page' })}
         />
