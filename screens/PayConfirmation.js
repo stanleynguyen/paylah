@@ -18,7 +18,13 @@ export default class PayConfirmation extends React.Component {
           <TouchableOpacity
             style={styles.detailsContainer}
             accessible={true}
-            accessibilityLabel="Double tap to edit"
+            accessibilityLabel={`Pay ${
+              state.params.amount
+            } to ${state.params.payees
+              .map(p => `${p.name}, `)
+              .join('')} with message ${
+              state.params.message
+            }. Double tap to edit`}
             accessibilityComponentType="button"
           >
             <Feather name="edit" style={styles.edit} size={35} color={RED} />
@@ -27,13 +33,15 @@ export default class PayConfirmation extends React.Component {
               <Text style={styles.fieldTxt}>Recipients</Text>
             </View>
             <View style={{ flexGrow: 0 }} accessible={false}>
-              <Payee
-                name="Stanley Nguyen"
-                number="81489408"
-                accessible={false}
-                showRemove={false}
-                onPress={() => {}}
-              />
+              {state.params.payees.map(p => (
+                <Payee
+                  key={p.number}
+                  {...p}
+                  accessible={false}
+                  showRemove={false}
+                  onPress={() => {}}
+                />
+              ))}
             </View>
             <View style={styles.field} accessible={false}>
               <MaterialIcons
@@ -41,7 +49,7 @@ export default class PayConfirmation extends React.Component {
                 style={styles.fieldIcon}
                 size={32}
               />
-              <Text style={styles.fieldTxt}>35</Text>
+              <Text style={styles.fieldTxt}>{state.params.amount}</Text>
             </View>
             <View style={styles.field} accessible={false}>
               <Feather
@@ -49,7 +57,7 @@ export default class PayConfirmation extends React.Component {
                 style={styles.fieldIcon}
                 size={32}
               />
-              <Text style={styles.fieldTxt}>Hello money for etc</Text>
+              <Text style={styles.fieldTxt}>{state.params.message}</Text>
             </View>
           </TouchableOpacity>
         </View>

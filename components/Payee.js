@@ -25,12 +25,13 @@ export const Payee = ({ name, number, onPress }) => (
   </TouchableOpacity>
 );
 
-export const PayeeOnPayPage = (
-  { name, number, onPress, accessible, showRemove } = {
-    showRemove: true,
-    accessible: true,
-  },
-) => (
+export const PayeeOnPayPage = ({
+  name,
+  number,
+  onPress,
+  accessible = true,
+  showRemove = true,
+}) => (
   <View
     accessible={accessible}
     accessibilityLabel={`${name} ${number}`}
@@ -46,6 +47,7 @@ export const PayeeOnPayPage = (
         accessibilityLabel={`Double tap to remove ${name} from payees list`}
         accessibilityComponentType="button"
         onPress={onPress}
+        style={{ justifyContent: 'center' }}
       >
         <Ionicons name="ios-close-circle" color={RED} size={30} />
       </TouchableOpacity>
@@ -102,10 +104,10 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   avatar: {
-    height: 20,
-    width: 20,
+    height: 30,
+    width: 30,
     backgroundColor: GREY,
-    borderRadius: 10,
+    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },

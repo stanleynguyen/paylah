@@ -54,6 +54,7 @@ export default class Pay extends React.Component {
   };
   enterPayees = payees => {
     this.setState({ payees });
+    this.amountFocus();
   };
   removePayee = pIdx => {
     this.setState({
