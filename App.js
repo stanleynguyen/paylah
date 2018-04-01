@@ -7,7 +7,9 @@ import Home from './screens/Home';
 import Bill from './screens/Bill';
 import BillConfirmation from './screens/BillConfirmation';
 import BillDone from './screens/BillDone';
-import PayConfirmation from './screens/PayConfirmation';
+import PayConfirmation, {
+  Header as PayCfmHeader,
+} from './screens/PayConfirmation';
 import PayDone from './screens/PayDone';
 import Request from './screens/Request';
 import SelectNumbers, { Header as PayeeHeader } from './screens/SelectNumbers';
@@ -23,7 +25,12 @@ const App = StackNavigator({
       header: <PayHeader />,
     },
   },
-  PayConfirmation: { screen: PayConfirmation },
+  PayConfirmation: {
+    screen: PayConfirmation,
+    navigationOptions: {
+      header: <PayCfmHeader />,
+    },
+  },
   PayDone: { screen: PayDone },
   Request: { screen: Request },
   SelectNumbers: {

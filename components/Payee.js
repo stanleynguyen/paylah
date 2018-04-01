@@ -25,6 +25,36 @@ export const Payee = ({ name, number, onPress }) => (
   </TouchableOpacity>
 );
 
+export const PayeeOnPayPage = (
+  { name, number, onPress, accessible, showRemove } = {
+    showRemove: true,
+    accessible: true,
+  },
+) => (
+  <View
+    accessible={accessible}
+    accessibilityLabel={`${name} ${number}`}
+    style={styles.payeeOnPay}
+  >
+    <View accessible={false} style={styles.avatar}>
+      <Text style={styles.avaTxt}>{name[0].toUpperCase()}</Text>
+    </View>
+    <Text style={styles.name}>{name}</Text>
+    {showRemove ? (
+      <TouchableOpacity
+        accessible={accessible}
+        accessibilityLabel={`Double tap to remove ${name} from payees list`}
+        accessibilityComponentType="button"
+        onPress={onPress}
+      >
+        <Ionicons name="ios-close-circle" color={RED} size={30} />
+      </TouchableOpacity>
+    ) : (
+      <View accessible={false} />
+    )}
+  </View>
+);
+
 export const PayeeList = ({ payees, onPayeePressed }) => (
   <View
     accessible={true}
@@ -70,5 +100,27 @@ const styles = StyleSheet.create({
     top: 0,
     right: 5,
     zIndex: 1,
+  },
+  avatar: {
+    height: 20,
+    width: 20,
+    backgroundColor: GREY,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avaTxt: {
+    color: WHITE,
+  },
+  payeeOnPay: {
+    flexDirection: 'row',
+    marginTop: -5,
+    marginBottom: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: GREY,
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

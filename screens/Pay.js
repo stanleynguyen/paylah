@@ -17,6 +17,7 @@ import { SimpleLineIcons, MaterialIcons, Feather } from '@expo/vector-icons';
 import { GREY, WHITE, RED } from '../constants/colors';
 import CommonHeader from '../components/Header';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { PayeeOnPayPage as Payee } from '../components/Payee';
 
 export default class Pay extends React.Component {
   state = {
@@ -100,6 +101,7 @@ export default class Pay extends React.Component {
               <Payee
                 key={p.number}
                 {...p}
+                accessible={true}
                 onPress={() => this.removePayee(i)}
               />
             ))}
@@ -159,9 +161,12 @@ export default class Pay extends React.Component {
             this.state.btnDisabled ? 'Disabled' : ''
           } review`}
           accessibilityComponentType="button"
-          onPress={() => {
-            console.log('press review');
-          }}
+          onPress={
+            this.state.btnDisabled
+              ? () => {}
+              : () =>
+                  this.props.navigation.navigate('PayConfirmation', this.state)
+          }
         >
           <Text style={ButtonStyles.text}>REVIEW</Text>
         </TouchableOpacity>
@@ -170,54 +175,8 @@ export default class Pay extends React.Component {
   }
 }
 
-const Payee = ({ name, number, onPress }) => (
-  <View
-    accessible={true}
-    accessibilityLabel={`${name} ${number}`}
-    style={styles.payee}
-  >
-    <View accessible={false} style={styles.avatar}>
-      <Text style={styles.avaTxt}>{name[0].toUpperCase()}</Text>
-    </View>
-    <Text style={styles.name}>{name}</Text>
-    <TouchableOpacity
-      accessible={true}
-      accessibilityLabel={`Double tap to remove ${name} from payees list`}
-      accessibilityComponentType="button"
-      onPress={onPress}
-    >
-      <Ionicons name="ios-close-circle" color={RED} size={30} />
-    </TouchableOpacity>
-  </View>
-);
-
 export const Header = () => (
   <CommonHeader accessibilityLabel="Pay friends by filling in the fields and review transation summary with the button at the bottom of the screen">
     <Text style={HeaderStyles.headerText}>Pay To Friends</Text>
   </CommonHeader>
 );
-
-const styles = StyleSheet.create({
-  avatar: {
-    height: 20,
-    width: 20,
-    backgroundColor: GREY,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avaTxt: {
-    color: WHITE,
-  },
-  payee: {
-    flexDirection: 'row',
-    marginTop: -5,
-    marginBottom: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: GREY,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-});
