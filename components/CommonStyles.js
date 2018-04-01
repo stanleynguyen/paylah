@@ -4,7 +4,6 @@ import { RED, WHITE } from '../constants/colors';
 
 export const HeaderStyles = StyleSheet.create({
   header: {
-    marginTop: 20,
     flex: 0.09,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -13,7 +12,7 @@ export const HeaderStyles = StyleSheet.create({
     elevation: 2,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   headerText: {
     fontSize: 18,
@@ -55,5 +54,15 @@ export const ButtonStyles = StyleSheet.create({
     color: WHITE,
     fontSize: 15,
     fontWeight: 'bold',
+  },
+});
+
+export const ContainerStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
