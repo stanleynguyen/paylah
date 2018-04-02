@@ -23,9 +23,22 @@ export default class Pay extends React.Component {
   state = {
     amount: '',
     message: '',
-    payees: [],
+    payees:
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.payees
+        ? this.props.navigation.state.params.payees
+        : [],
     btnDisabled: true,
   };
+
+  componentDidMount() {
+    if (
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.payees
+    ) {
+      this.amountFocus();
+    }
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -46,7 +59,7 @@ export default class Pay extends React.Component {
     this.setState({ [field]: text });
   };
   onPayeeFocus = () => {
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
     this.props.navigation.navigate('SelectNumbers', {
       enterPayees: this.enterPayees,
       payees: this.state.payees,
@@ -78,25 +91,27 @@ export default class Pay extends React.Component {
     return (
       <View style={ContainerStyles.container}>
         <View style={{ flexDirection: 'column', width: '100%' }}>
-          <View
+          <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
             accessibilityLabel="Choose payee"
-            onPress={this.payeeFocus}
+            onPress={this.onPayeeFocus}
           >
             <SimpleLineIcons
               name="user"
               style={InputGroupStyles.inputicon}
               size={35}
             />
-            <TextInput
-              placeholder="Pay To (max 5)"
-              style={InputGroupStyles.input}
-              underlineColorAndroid={'transparent'}
-              ref={i => (this.payeeInput = i)}
-              onFocus={this.onPayeeFocus}
-            />
-          </View>
+            <Text
+              // placeholder=""
+              style={[InputGroupStyles.input, { color: GREY }]}
+              // underlineColorAndroid={'transparent'}
+              // ref={i => (this.payeeInput = i)}
+              // onFocus={this.onPayeeFocus}
+            >
+              Pay To (max 5)
+            </Text>
+          </TouchableOpacity>
           <View style={{ flexGrow: 0 }}>
             {this.state.payees.map((p, i) => (
               <Payee

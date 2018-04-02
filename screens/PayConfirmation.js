@@ -26,6 +26,7 @@ export default class PayConfirmation extends React.Component {
               state.params.message
             }. Double tap to edit`}
             accessibilityComponentType="button"
+            onPress={() => this.props.navigation.goBack()}
           >
             <Feather name="edit" style={styles.edit} size={35} color={RED} />
             <View style={styles.field} accessible={false}>

@@ -19,19 +19,31 @@ import { PayeeList } from '../components/Payee';
 
 export default class SelectNumbers extends React.Component {
   state = {
-    payees: this.props.navigation.state.params.payees,
-    favourites: favourites.filter(
-      f =>
-        !this.props.navigation.state.params.payees.some(
-          p => p.number === f.number,
-        ),
-    ),
-    contacts: contacts.filter(
-      c =>
-        !this.props.navigation.state.params.payees.some(
-          p => p.number === c.number,
-        ),
-    ),
+    payees:
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.payees
+        ? this.props.navigation.state.params.payees
+        : [],
+    favourites:
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.payees
+        ? favourites.filter(
+            f =>
+              !this.props.navigation.state.params.payees.some(
+                p => p.number === f.number,
+              ),
+          )
+        : favourites,
+    contacts:
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.payees
+        ? contacts.filter(
+            c =>
+              !this.props.navigation.state.params.payees.some(
+                p => p.number === c.number,
+              ),
+          )
+        : contacts,
   };
 
   addPayee = p => {
@@ -63,14 +75,24 @@ export default class SelectNumbers extends React.Component {
     this.setState({ favourites: fav, contacts: con });
   };
   backToPayPage = () => {
-    this.props.navigation.goBack();
-    this.props.navigation.state.params.enterPayees(this.state.payees);
+    if (
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.enterPayees
+    ) {
+      this.props.navigation.goBack();
+      this.props.navigation.state.params.enterPayees(this.state.payees);
+    } else {
+      this.props.navigation.navigate('Pay', { payees: this.state.payees });
+    }
   };
   render() {
     const gotPayees = this.state.payees && this.state.payees.length > 0;
     return (
       <View style={[ContainerStyles.container, customStyle.container]}>
-        <CommonHeader customStyle={customStyle.header}>
+        <CommonHeader
+          customStyle={customStyle.header}
+          accessibilityLabel="Choose payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list."
+        >
           <TouchableOpacity
             accessible={true}
             accessibilityLabel="Close"
