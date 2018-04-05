@@ -5,6 +5,7 @@ import { StackNavigator } from 'react-navigation';
 import Pay, { Header as PayHeader } from './screens/Pay';
 import Home from './screens/Home';
 import Bill from './screens/Bill';
+import BillSelect from './screens/BillSelect';
 import BillConfirmation from './screens/BillConfirmation';
 import BillDone from './screens/BillDone';
 import PayConfirmation, {
@@ -17,8 +18,10 @@ import SelectNumbers, { Header as PayeeHeader } from './screens/SelectNumbers';
 const App = StackNavigator({
   Home: { screen: Home },
   Bill: { screen: Bill },
+  BillSelect: { screen: BillSelect },
   BillConfirmation: { screen: BillConfirmation },
   BillDone: { screen: BillDone },
+
   Pay: {
     screen: Pay,
     navigationOptions: {
