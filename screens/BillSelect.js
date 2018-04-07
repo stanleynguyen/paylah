@@ -13,6 +13,7 @@ import CommonHeader from '../components/Header';
 import { EvilIcons } from '@expo/vector-icons';
 import { HeaderStyles } from '../components/CommonStyles';
 import { RED, BEIGE, GREY, WHITE } from '../constants/colors';
+import { ListByCategory } from '../components/Company';
 
 const KEYS_TO_FILTERS = ['company.name', 'company.type'];
 
@@ -25,9 +26,15 @@ export default class BillSelect extends React.Component {
     this.setState({ searchTerm: term });
   }
   render() {
-    const filteredCompanies = companies.filter(
-      createFilter(this.state.searchTerm, KEYS_TO_FILTERS),
-    );
+    const filteredCompanies = companies
+      .filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+      .reduce((accu, c) => {
+        accu[c.company.type] = accu[c.company.type]
+          ? [...accu[c.company.type], c]
+          : [c];
+        return accu;
+      }, {});
+
     return (
       <View style={styles.container}>
         <CommonHeader customStyle={styles.header}>
@@ -60,31 +67,14 @@ export default class BillSelect extends React.Component {
           placeholder="Search organisation"
         />
         <ScrollView style={styles.companiesList}>
-          {filteredCompanies.map(item => (
-            <TouchableOpacity
-              accessible={true}
-              accessibilityComponentType="button"
-              accessibilityLabel={`Double tap to choose organisation ${
-                item.company.name
-              }`}
-              onPress={() =>
-                this.props.navigation.navigate('Bill', {
-                  payee: item.company,
-                })
+          {Object.keys(filteredCompanies).map(k => (
+            <ListByCategory
+              key={k}
+              title={k}
+              companies={
+                console.log(filteredCompanies[k]) || filteredCompanies[k]
               }
-              key={item.id}
-              style={styles.company}
-            >
-              <View accessible={false} style={styles.avatar}>
-                <Text style={styles.avaTxt}>
-                  {item.company.name[0].toUpperCase()}
-                </Text>
-              </View>
-              <View style={styles.details}>
-                <Text>{item.company.name}</Text>
-                <Text style={styles.companyType}>{item.company.type}</Text>
-              </View>
-            </TouchableOpacity>
+            />
           ))}
         </ScrollView>
       </View>
@@ -102,17 +92,6 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '100%',
   },
-  company: {
-    flexDirection: 'row',
-    paddingTop: 10,
-    paddingBottom: 10,
-    height: 60,
-    width: '100%',
-    alignItems: 'center',
-  },
-  companyType: {
-    color: 'rgba(0,0,0,0.5)',
-  },
   searchInput: {
     height: 40,
     width: '100%',
@@ -126,21 +105,5 @@ const styles = StyleSheet.create({
   },
   header: {
     zIndex: 1,
-  },
-  avatar: {
-    height: 40,
-    width: 40,
-    backgroundColor: GREY,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avaTxt: {
-    color: WHITE,
-    fontSize: 25,
-  },
-  details: {
-    marginLeft: 10,
-    justifyContent: 'space-around',
   },
 });
