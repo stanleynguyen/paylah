@@ -108,34 +108,55 @@ export default class Home extends React.Component {
           <TouchableOpacity
             style={styles.extraRow}
             accessible={true}
-            accessibilityLabel="Add new favourite contact"
+            accessibilityLabel="See all favorite contacts"
             accessibilityComponentType="button"
-            onPress={() => navigate('AddFav')}
+            // onPress={() => navigate('AddFav')}
           >
-            <Text style={styles.extra}> Add </Text>
+            <Text style={styles.extra}>See All</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={[styles.iconRow, { flex: 2.7 }]}>
-          {favourites /* for option 2 .slice(1, 5)*/
-            .map(p => (
-              <TouchableOpacity
-                key={p.id}
-                style={styles.iconButton}
-                accessibilityLabel={`Pay to ${p.name}`}
-                onPress={() => navigate('Pay', { payees: [p] })}
-              >
-                <View accessible={false} style={styles.favAva}>
-                  <Text style={styles.avaText}>{p.name[0].toUpperCase()}</Text>
-                </View>
-                <Text style={styles.iconLabel}>{p.name.substring(0, 9)}</Text>
-              </TouchableOpacity>
-            ))}
+        <View style={styles.iconRow}>
+          {favourites.slice(1, 4).map(p => (
+            <TouchableOpacity
+              key={p.id}
+              style={styles.iconButton}
+              accessible={true}
+              accessibilityLabel={`Pay to ${p.name}`}
+              accessibilityComponentType="button"
+              onPress={() => navigate('Pay', { payees: [p] })}
+            >
+              <View accessible={false} style={styles.favAva}>
+                <Text style={styles.avaText}>{p.name[0].toUpperCase()}</Text>
+              </View>
+              <Text style={styles.iconLabel}>{p.name.substring(0, 9)}</Text>
+            </TouchableOpacity>
+          ))}
+          <TouchableOpacity
+            style={[styles.iconButton, styles.addIcon]}
+            accessible={true}
+            accessibilityLabel="Add new favorite contact"
+            accessibilityComponentType="button"
+            onPress={() => navigate('AddFav')}
+          >
+            <View accessible={false} style={styles.addCircle}>
+              <Text style={[styles.avaText, { color: RED }]}>+</Text>
+            </View>
+            <Text style={[styles.iconLabel, { color: RED }]}>Add</Text>
+          </TouchableOpacity>
         </View>
 
-        {
-          // for option 2
-          /* <View style={styles.iconRow}>
+        <View style={styles.titleRow}>
+          <View
+            style={styles.textRow}
+            accessible={true}
+            accessibilityLabel="Bills shortcut"
+          >
+            <Text style={styles.text}>Bills Shortcut</Text>
+          </View>
+        </View>
+
+        <View style={styles.iconRow}>
           {companies.slice(0, 4).map(c => (
             <TouchableOpacity
               key={c.id}
@@ -153,8 +174,7 @@ export default class Home extends React.Component {
               </Text>
             </TouchableOpacity>
           ))}
-        </View> */
-        }
+        </View>
 
         <View style={styles.menuRow}>
           <TouchableOpacity
@@ -255,7 +275,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingBottom: 15,
+    marginBottom: 5,
   },
   balanceRow: {
     flex: 2,
@@ -374,9 +394,20 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     textAlignVertical: 'center',
-    borderRadius: 10,
+    // borderRadius: 10,
+    // borderColor: RED,
+    // borderWidth: StyleSheet.hairlineWidth,
+    color: RED,
+    padding: 8,
+  },
+  addIcon: {},
+  addCircle: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
     borderColor: RED,
     borderWidth: StyleSheet.hairlineWidth,
-    padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
