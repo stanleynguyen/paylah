@@ -14,8 +14,11 @@ import PayConfirmation, {
   Header as PayCfmHeader,
 } from './screens/PayConfirmation';
 import PayDone from './screens/PayDone';
-import Request from './screens/Request';
+import Request, { Header as RequestHeader } from './screens/Request';
 import SelectNumbers, { Header as PayeeHeader } from './screens/SelectNumbers';
+import RequestConfirmation, {
+  Header as RequestCfmHeader,
+} from './screens/RequestConfirmation';
 
 const App = StackNavigator({
   Home: {
@@ -62,11 +65,22 @@ const App = StackNavigator({
       header: null,
     },
   },
-  Request: { screen: Request },
+  Request: {
+    screen: Request,
+    navigationOptions: {
+      header: ({ navigation }) => <RequestHeader navigation={navigation} />,
+    },
+  },
   SelectNumbers: {
     screen: SelectNumbers,
     navigationOptions: {
       header: null,
+    },
+  },
+  RequestConfirmation: {
+    screen: RequestConfirmation,
+    navigationOptions: {
+      header: <RequestCfmHeader />,
     },
   },
 });

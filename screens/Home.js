@@ -7,6 +7,7 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {
   FontAwesome,
@@ -39,7 +40,7 @@ export default class Home extends React.Component {
             style={styles.iconButton}
             accessible={true}
             accessibilityLabel={'Pay money, double tap'}
-            onPress={() => navigate('SelectNumbers')}
+            onPress={() => navigate('SelectNumbers', { forPage: 'Pay' })}
           >
             <FontAwesome name="send" size={40} />
             <Text style={styles.iconLabel}> Pay </Text>
@@ -49,7 +50,7 @@ export default class Home extends React.Component {
             style={styles.iconButton}
             accessible={true}
             accessibilityLabel={'Request money, double tap'}
-            onPress={() => navigate('BillConfirmation')}
+            onPress={() => navigate('SelectNumbers', { forPage: 'Request' })}
           >
             <MaterialIcons name="message" size={45} />
             <Text style={styles.iconLabel}> Request </Text>

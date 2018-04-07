@@ -15,12 +15,16 @@ import {
   ButtonStyles,
   ContainerStyles,
 } from '../components/CommonStyles';
-import { SimpleLineIcons, MaterialIcons, Feather } from '@expo/vector-icons';
+import {
+  SimpleLineIcons,
+  MaterialIcons,
+  Feather,
+  Ionicons,
+  EvilIcons,
+} from '@expo/vector-icons';
 import { GREY, WHITE, RED } from '../constants/colors';
 import CommonHeader from '../components/Header';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { PayeeOnPayPage as Payee } from '../components/Payee';
-import EvilIcons from '@expo/vector-icons/EvilIcons';
 
 export default class Pay extends React.Component {
   state = {
@@ -51,6 +55,7 @@ export default class Pay extends React.Component {
     this.props.navigation.navigate('SelectNumbers', {
       enterPayees: this.enterPayees,
       payees: this.state.payees,
+      forPage: 'Pay',
     });
   };
   enterPayees = payees => {

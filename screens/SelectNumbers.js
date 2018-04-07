@@ -75,7 +75,7 @@ export default class SelectNumbers extends React.Component {
     );
     this.setState({ favourites: fav, contacts: con });
   };
-  backToPayPage = () => {
+  backToPage = () => {
     if (
       this.props.navigation.state.params &&
       this.props.navigation.state.params.enterPayees
@@ -83,7 +83,12 @@ export default class SelectNumbers extends React.Component {
       this.props.navigation.goBack();
       this.props.navigation.state.params.enterPayees(this.state.payees);
     } else {
-      this.props.navigation.navigate('Pay', { payees: this.state.payees });
+      this.props.navigation.navigate(
+        this.props.navigation.state.params.forPage,
+        {
+          payees: this.state.payees,
+        },
+      );
     }
   };
   render() {
@@ -107,16 +112,28 @@ export default class SelectNumbers extends React.Component {
           <View
             style={HeaderStyles.textWrapper}
             accessible={true}
-            accessibilityLabel="Choose payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list."
+            accessibilityLabel={
+              this.props.navigation.state.params.forPage === 'Pay'
+                ? 'Choose payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
+                : this.props.navigation.state.params.forPage === 'Request'
+                  ? 'Choose contact to request from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
+                  : ''
+            }
           >
-            <Text style={HeaderStyles.headerText}>Add Payee</Text>
+            <Text style={HeaderStyles.headerText}>
+              {this.props.navigation.state.params.forPage === 'Pay'
+                ? 'Add Payee'
+                : this.props.navigation.state.params.forPage === 'Request'
+                  ? 'Add Requested Contacts'
+                  : ''}
+            </Text>
           </View>
           <TouchableOpacity
             style={customStyle.doneBtn}
             accessible={true}
             accessibilityLabel={gotPayees ? 'Disabled done' : 'Done'}
             accessibilityComponentType="button"
-            onPress={gotPayees ? this.backToPayPage : () => {}}
+            onPress={gotPayees ? this.backToPage : () => {}}
           >
             <Text style={{ color: gotPayees ? RED : GREY }}>DONE</Text>
           </TouchableOpacity>
