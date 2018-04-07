@@ -3,10 +3,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 import Pay, { Header as PayHeader } from './screens/Pay';
-import Home from './screens/Home';
-import Bill from './screens/Bill';
+import Home, { Header as HomeHeader } from './screens/Home';
+import Bill, { Header as BillHeader } from './screens/Bill';
 import BillSelect from './screens/BillSelect';
-import BillConfirmation from './screens/BillConfirmation';
+import BillConfirmation, {
+  Header as BillCfmHeader,
+} from './screens/BillConfirmation';
 import BillDone from './screens/BillDone';
 import PayConfirmation, {
   Header as PayCfmHeader,
@@ -16,16 +18,36 @@ import Request from './screens/Request';
 import SelectNumbers, { Header as PayeeHeader } from './screens/SelectNumbers';
 
 const App = StackNavigator({
-  Home: { screen: Home },
-  Bill: { screen: Bill },
-  BillSelect: { screen: BillSelect },
-  BillConfirmation: { screen: BillConfirmation },
+  Home: {
+    screen: Home,
+    navigationOptions: {
+      header: <HomeHeader />,
+    },
+  },
+  Bill: {
+    screen: Bill,
+    navigationOptions: {
+      header: ({ navigation }) => <BillHeader navigation={navigation} />,
+    },
+  },
+  BillSelect: {
+    screen: BillSelect,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  BillConfirmation: {
+    screen: BillConfirmation,
+    navigationOptions: {
+      header: <BillCfmHeader />,
+    },
+  },
   BillDone: { screen: BillDone },
 
   Pay: {
     screen: Pay,
     navigationOptions: {
-      header: <PayHeader />,
+      header: ({ navigation }) => <PayHeader navigation={navigation} />,
     },
   },
   PayConfirmation: {

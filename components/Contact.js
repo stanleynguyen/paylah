@@ -3,8 +3,14 @@ import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { GREY, WHITE } from '../constants/colors';
 
 export const Contactlist = ({ title, contacts, onPayeeChosen }) => (
-  <View accessible={true} accessibilityLabel={title} style={styles.contactList}>
-    <Text style={styles.listTitle}>{title.toUpperCase()}</Text>
+  <View accessible={false} style={styles.contactList}>
+    <View
+      style={{ width: '100%' }}
+      accessible={true}
+      accessibilityLabel={title}
+    >
+      <Text style={styles.listTitle}>{title.toUpperCase()}</Text>
+    </View>
     {contacts.map(c => (
       <Contact key={c.number} {...c} onPress={() => onPayeeChosen(c)} />
     ))}

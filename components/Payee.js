@@ -21,7 +21,7 @@ export const Payee = ({ name, number, onPress }) => (
     <View accessible={false} style={styles.payeeAva}>
       <Text style={styles.avaTxt}>{name[0].toUpperCase()}</Text>
     </View>
-    <Text style={styles.name}>{name.split(' ')[0].substring(0, 9)}</Text>
+    <Text style={styles.name}>{name.split(' ')[0].substring(0, 8)}</Text>
   </TouchableOpacity>
 );
 
@@ -58,11 +58,7 @@ export const PayeeOnPayPage = ({
 );
 
 export const PayeeList = ({ payees, onPayeePressed }) => (
-  <View
-    accessible={true}
-    accessibilityLabel="Selected payees list"
-    style={styles.container}
-  >
+  <View accessible={false} style={styles.container}>
     {payees.map(p => (
       <Payee key={p.number} {...p} onPress={() => onPayeePressed(p)} />
     ))}

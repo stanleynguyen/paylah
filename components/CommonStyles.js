@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { RED, WHITE } from '../constants/colors';
 
 export const HeaderStyles = StyleSheet.create({
@@ -7,15 +7,27 @@ export const HeaderStyles = StyleSheet.create({
     flex: 0.09,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
+    shadowOpacity: Platform.OS === 'ios' ? 0.2 : 0.8,
     shadowRadius: 2,
     elevation: 2,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: Platform.OS === 'ios' ? 20 : 0,
   },
   headerText: {
     fontSize: 18,
+  },
+  textWrapper: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerImg: {
+    height: '60%',
   },
 });
 
@@ -42,6 +54,9 @@ export const InputGroupStyles = StyleSheet.create({
 });
 
 export const ButtonStyles = StyleSheet.create({
+  btnContainer: {
+    flexDirection: 'row',
+  },
   reviewbtn: {
     width: '100%',
     borderRadius: 4,
@@ -64,5 +79,44 @@ export const ContainerStyles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+});
+
+export const ConfirmationPageStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  shadowWrapper: {
+    width: '100%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 2,
+    borderRadius: 4,
+  },
+  detailsContainer: {
+    width: '100%',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  field: {
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  fieldIcon: {
+    marginRight: 10,
+  },
+  edit: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
   },
 });

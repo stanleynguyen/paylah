@@ -6,6 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {
   HeaderStyles,
@@ -18,6 +20,7 @@ import { GREY, WHITE, RED } from '../constants/colors';
 import CommonHeader from '../components/Header';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { PayeeOnPayPage as Payee } from '../components/Payee';
+import EvilIcons from '@expo/vector-icons/EvilIcons';
 
 export default class Pay extends React.Component {
   state = {
@@ -28,7 +31,7 @@ export default class Pay extends React.Component {
       this.props.navigation.state.params.payees
         ? this.props.navigation.state.params.payees
         : [],
-    btnDisabled: true,
+    focusedElem: '',
   };
 
   componentDidMount() {
@@ -38,21 +41,6 @@ export default class Pay extends React.Component {
     ) {
       this.amountFocus();
     }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.amount === prevState.amount &&
-      this.state.payees.length === prevState.payees.length &&
-      this.state.message === prevState.message
-    ) {
-      return;
-    }
-    const btnDisabled =
-      this.state.amount === '' ||
-      this.state.message === '' ||
-      this.state.payees.length === 0;
-    this.setState({ btnDisabled });
   }
 
   onInputChage = (text, field) => {
@@ -86,11 +74,36 @@ export default class Pay extends React.Component {
   messageFocus = () => {
     this.messageInput.focus();
   };
+  nextStep = () => {
+    console.log(!this.state.message);
+    if (!this.state.amount) {
+      if (this.state.focusedElem !== 'amountInput') {
+        this.setState({ focusedElem: 'amountInput' });
+      } else {
+        this.amountFocus();
+      }
+      return this.amountFocus();
+    } else if (!this.state.message) {
+      if (this.state.focusedElem !== 'messageInput') {
+        this.setState({ focusedElem: 'messageInput' });
+      } else {
+        this.messageFocus();
+      }
+      return this.messageFocus();
+    } else if (this.state.payees.length <= 0) {
+      return this.props.navigation.navigate('SelectNumbers');
+    }
+
+    return this.props.navigation.navigate('PayConfirmation', this.state);
+  };
   render() {
     const { navigate, state } = this.props.navigation;
     return (
       <View style={ContainerStyles.container}>
-        <View style={{ flexDirection: 'column', width: '100%' }}>
+        <ScrollView
+          style={{ flexDirection: 'column', width: '100%' }}
+          showsVerticalScrollIndicator={false}
+        >
           <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
@@ -122,7 +135,7 @@ export default class Pay extends React.Component {
               />
             ))}
           </View>
-          <View
+          <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
             accessibilityLabel="Amount"
@@ -143,8 +156,8 @@ export default class Pay extends React.Component {
               ref={i => (this.amountInput = i)}
               onSubmitEditing={this.messageFocus}
             />
-          </View>
-          <View
+          </TouchableOpacity>
+          <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
             accessibilityLabel="Type a message"
@@ -164,35 +177,50 @@ export default class Pay extends React.Component {
               ref={i => (this.messageInput = i)}
               accessible={false}
             />
-          </View>
-        </View>
-        <TouchableOpacity
-          style={[
-            ButtonStyles.reviewbtn,
-            this.state.btnDisabled ? { backgroundColor: GREY } : {},
-          ]}
-          disabled={this.state.btnDisabled}
-          accessible={true}
-          accessibilityLabel={`${
-            this.state.btnDisabled ? 'Disabled' : ''
-          } review`}
-          accessibilityComponentType="button"
-          onPress={
-            this.state.btnDisabled
-              ? () => {}
-              : () =>
-                  this.props.navigation.navigate('PayConfirmation', this.state)
-          }
+          </TouchableOpacity>
+        </ScrollView>
+        <KeyboardAvoidingView
+          behavior="padding"
+          keyboardVerticalOffset={75}
+          style={ButtonStyles.btnContainer}
         >
-          <Text style={ButtonStyles.text}>REVIEW</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={ButtonStyles.reviewbtn}
+            accessible={true}
+            accessibilityLabel="Next"
+            accessibilityComponentType="button"
+            onPress={this.nextStep}
+          >
+            <Text style={ButtonStyles.text}>NEXT</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </View>
     );
   }
 }
 
-export const Header = () => (
-  <CommonHeader accessibilityLabel="Pay friends by filling in the fields and review transation summary with the button at the bottom of the screen">
-    <Text style={HeaderStyles.headerText}>Pay To Friends</Text>
+export const Header = ({ navigation }) => (
+  <CommonHeader>
+    <TouchableOpacity
+      accessible={true}
+      accessibilityLabel="Close"
+      accessibilityComponentType="button"
+      onPress={() => navigation.goBack(null)}
+    >
+      <EvilIcons
+        style={HeaderStyles.headerIcon}
+        name="close"
+        size={26}
+        color={RED}
+      />
+    </TouchableOpacity>
+    <View
+      style={HeaderStyles.textWrapper}
+      accessible={true}
+      accessibilityLabel="Pay friends by filling in the fields and review transation summary with the button at the bottom of the screen"
+    >
+      <Text style={HeaderStyles.headerText}>Pay To Friends</Text>
+    </View>
+    <View style={{ width: 18 }} />
   </CommonHeader>
 );

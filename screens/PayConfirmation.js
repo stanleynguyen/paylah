@@ -2,7 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 
 import CommonHeader from '../components/Header';
-import { HeaderStyles, ButtonStyles } from '../components/CommonStyles';
+import {
+  HeaderStyles,
+  ButtonStyles,
+  ConfirmationPageStyles,
+} from '../components/CommonStyles';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
@@ -77,46 +81,15 @@ export default class PayConfirmation extends React.Component {
 }
 
 export const Header = () => (
-  <CommonHeader accessibilityLabel="Review transaction details and confirm transaction at the bottom of the page">
-    <Text style={HeaderStyles.headerText}>Confirm Transaction</Text>
+  <CommonHeader>
+    <View
+      accessible={true}
+      accessibilityLabel="Review transaction details and confirm transaction at the bottom of the page"
+      style={{ width: '100%', alignItems: 'center' }}
+    >
+      <Text style={HeaderStyles.headerText}>Confirm Transaction</Text>
+    </View>
   </CommonHeader>
 );
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 10,
-  },
-  shadowWrapper: {
-    width: '100%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 2,
-    borderRadius: 4,
-  },
-  detailsContainer: {
-    width: '100%',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  field: {
-    height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  fieldIcon: {
-    marginRight: 10,
-  },
-  edit: {
-    position: 'absolute',
-    top: 15,
-    right: 15,
-  },
-});
+const styles = ConfirmationPageStyles;

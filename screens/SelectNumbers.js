@@ -6,6 +6,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 
@@ -89,10 +90,7 @@ export default class SelectNumbers extends React.Component {
     const gotPayees = this.state.payees && this.state.payees.length > 0;
     return (
       <View style={[ContainerStyles.container, customStyle.container]}>
-        <CommonHeader
-          customStyle={customStyle.header}
-          accessibilityLabel="Choose payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list."
-        >
+        <CommonHeader customStyle={customStyle.header}>
           <TouchableOpacity
             accessible={true}
             accessibilityLabel="Close"
@@ -106,7 +104,13 @@ export default class SelectNumbers extends React.Component {
               color={RED}
             />
           </TouchableOpacity>
-          <Text style={HeaderStyles.headerText}>Add Payee</Text>
+          <View
+            style={HeaderStyles.textWrapper}
+            accessible={true}
+            accessibilityLabel="Choose payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list."
+          >
+            <Text style={HeaderStyles.headerText}>Add Payee</Text>
+          </View>
           <TouchableOpacity
             style={customStyle.doneBtn}
             accessible={true}
@@ -173,9 +177,10 @@ const customStyle = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 5,
     paddingRight: 5,
-    height: 50,
+    height: Platform.OS === 'ios' ? 70 : 50,
     flex: 0,
     width: '100%',
+    zIndex: 2,
   },
   container: {
     padding: 0,

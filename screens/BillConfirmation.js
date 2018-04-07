@@ -1,131 +1,83 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
+import CommonHeader from '../components/Header';
+import { RED } from '../constants/colors';
+import {
+  ConfirmationPageStyles,
+  ButtonStyles,
+  HeaderStyles,
+} from '../components/CommonStyles';
 
 export default class BillConfirmation extends React.Component {
-  // state = {
-  //   amount: this.props.navigation.state.params.amount,
-  //   message: this.props.navigation.state.params.message,
-  //   payee: this.props.navigation.state.params.payee,
-  // };
-
-  // / {this.state.payee + this.state.amount + this.state.message}
   render() {
     const { navigate, state } = this.props.navigation;
     return (
-      <View style={styles.container}>
-        <View style={styles.containerTop}>
-          <TouchableOpacity style={styles.confirmationTextBox}>
-            <Text style={styles.textLabel}>
-              Paying to
-            </Text>
-            <Text style={styles.textValue}>
-              Singtel
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmationTextBox}>
-            <Text style={styles.textLabel}>
-              Bill Reference Number
-            </Text>
-            <Text style={styles.textValue}>
-              FJ112950J10J
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmationTextBox}>
-            <Text style={styles.textLabel}>
-              Paid Amount
-            </Text>
-            <Text style={styles.textValue}>
-              $193.10
-            </Text>          
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmationTextBox}>
-            <Text style={styles.textLabel}>
-              Paid Using
-            </Text>
-            <Text style={styles.textValue}>
-              PayLah Credit
-            </Text>          
-          </TouchableOpacity>
-        </View>
-        <View style={styles.containerBottom}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>
-              Send
-            </Text>  
+      <View style={styles.container} accessible={false}>
+        <View style={styles.shadowWrapper} accessible={false}>
+          <TouchableOpacity
+            style={styles.detailsContainer}
+            accessible={true}
+            accessibilityLabel={`Pay ${state.params.amount} to ${
+              state.params.payee
+            } for bill reference ${state.params.message}. Double tap to edit`}
+            onPress={() => this.props.navigation.goBack()}
+          >
+            <Feather name="edit" style={styles.edit} size={35} color={RED} />
+            <View style={styles.field} accessible={false}>
+              <FontAwesome
+                name="building-o"
+                style={styles.fieldIcon}
+                size={32}
+              />
+              <Text style={styles.fieldTxt}>{state.params.payee.name}</Text>
+            </View>
+            <View style={styles.field} accessible={false}>
+              <MaterialIcons
+                name="attach-money"
+                style={styles.fieldIcon}
+                size={32}
+              />
+              <Text style={styles.fieldTxt}>{state.params.amount}</Text>
+            </View>
+            <View style={styles.field} accessible={false}>
+              <MaterialIcons
+                name="receipt"
+                style={styles.fieldIcon}
+                size={32}
+              />
+              <Text style={styles.fieldTxt}>{state.params.message}</Text>
+            </View>
           </TouchableOpacity>
         </View>
+
+        <TouchableOpacity
+          style={ButtonStyles.reviewbtn}
+          accessible={true}
+          accessibilityLabel="Confirm"
+          accessibilityComponentType="button"
+          onPress={() => navigate('PayDone')}
+        >
+          <Text style={ButtonStyles.text}>CONFIRM</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-  },
-  containerTop: {
-    flex: 4,
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-  },
-  containerBottom: {
-    flex: 1,
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    padding: 15
-  },  
-  confirmationTextBox:{
-    flexDirection: 'row',
-    height: 80,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textLabel:{
-    flex:3,
-    fontSize: 16,
-    color: 'grey',
-    textAlign: 'left',
-    paddingLeft: 20,
-    fontWeight: '300'
-  },
-  textValue:{
-    flex:2,
-    fontSize: 20,
-    textAlign: 'right',
-    paddingRight: 15,
-    fontWeight: '300'
-  },
-  // buttonWrapper:{
-  //   height: 80,
-  //   flexDirection: 'column',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',    
-  // },
-  button:{
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FA5A74',
-    borderRadius: 15,
-  },
-  buttonText:{
-    fontSize: 20,
-    color: 'white',
-  },
+const styles = ConfirmationPageStyles;
 
-});
-
-
-        // <Text style={styles.confirmationText}>
-        //     {'Paying phone bills to: ' + this.state.payee}
-        // </Text>
-        // <Text style={styles.container}>
-        //     {'Bill reference number: S46031JF' + this.state.message}        
-        // </Text>
-        // <Text style={styles.container}>
-        //     {'Amount' + this.state.amount} 
-        // </Text>
+export const Header = () => (
+  <CommonHeader>
+    <View
+      accessible={true}
+      accessibilityLabel="Review transaction details and confirm transaction at the bottom of the page"
+      style={{ width: '100%', alignItems: 'center' }}
+    >
+      <Text style={HeaderStyles.headerText}>Confirm Transaction</Text>
+    </View>
+  </CommonHeader>
+);
