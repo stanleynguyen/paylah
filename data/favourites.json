@@ -1,9 +1,9 @@
 {
   "favourites": [
-    { "name": "Stanley Nguyen", "number": "81489408" },
-    { "name": "Peng Fei", "number": "93375456" },
-    { "name": "Michelle Cheah", "number": "97111323" },
-    { "name": "Valerie Yeoh", "number": "86452894" },
-    { "name": "Christabella Adelina", "number": "86563927" }
+    { "id": 0, "name": "Stanley Nguyen", "number": "81489408" },
+    { "id": 1, "name": "Peng Fei", "number": "93375456" },
+    { "id": 2, "name": "Michelle Cheah", "number": "97111323" },
+    { "id": 3, "name": "Valerie Yeoh", "number": "86452894" },
+    { "id": 4, "name": "Christabella Adelina", "number": "86563927" }
   ]
 }

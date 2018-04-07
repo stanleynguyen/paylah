@@ -20,26 +20,28 @@ import { Font } from 'expo';
 import logo from '../icons/logo.jpg';
 import CommonHeader from '../components/Header';
 import companies from '../data/companies';
+import { favourites } from '../data/favourites';
 import { HeaderStyles } from '../components/CommonStyles';
+import { RED } from '../constants/colors';
 
 export default class Home extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
+    const name = ['Bella', 'Valerie', 'Stanley', 'Michelle'];
     return (
       <View style={styles.container}>
         <View
           style={styles.titleRow}
           accessible={true}
-          accessibilityLabel={'Wallet features, heading'}
+          accessibilityLabel={'Wallet Features, heading'}
         >
-          <Text style={styles.text}> Wallet Features </Text>
+          <Text style={styles.title}> Wallet Features </Text>
         </View>
-
         <View style={styles.iconRow}>
           <TouchableOpacity
             style={styles.iconButton}
             accessible={true}
-            accessibilityLabel={'Pay money, double tap'}
+            accessibilityLabel={'Pay Money, double tap'}
             onPress={() => navigate('SelectNumbers', { forPage: 'Pay' })}
           >
             <FontAwesome name="send" size={40} />
@@ -49,7 +51,7 @@ export default class Home extends React.Component {
           <TouchableOpacity
             style={styles.iconButton}
             accessible={true}
-            accessibilityLabel={'Request money, double tap'}
+            accessibilityLabel={'Request Money, double tap'}
             onPress={() => navigate('SelectNumbers', { forPage: 'Request' })}
           >
             <MaterialIcons name="message" size={45} />
@@ -59,17 +61,16 @@ export default class Home extends React.Component {
           <TouchableOpacity
             style={styles.iconButton}
             accessible={true}
-            accessibilityLabel={'Scan to pay, double tap'}
-            onPress={() => navigate('PayConfirmation')}
+            accessibilityLabel={'Scan QR to Pay, double tap'}
           >
             <Ionicons name="md-qr-scanner" size={40} />
-            <Text style={styles.iconLabel}> Scan </Text>
+            <Text style={styles.iconLabel}> Scan QR </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.iconButton}
             accessible={true}
-            accessibilityLabel={'Pay bills, double tap'}
+            accessibilityLabel={'Pay Bills, double tap'}
             onPress={() => navigate('BillSelect', { pagename: 'Select Payee' })}
           >
             <MaterialIcons name="receipt" size={45} />
@@ -88,88 +89,62 @@ export default class Home extends React.Component {
           </TouchableOpacity>
           <View style={styles.balanceMenu}>
             <TouchableOpacity style={styles.balanceButton}>
-              <Text style={{ color: '#FE6D7C' }}> Top-up </Text>
+              <Text style={{ color: RED }}> Top-up </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.balanceButton}>
-              <Text style={{ color: '#FE6D7C' }}> Withdraw </Text>
+              <Text style={{ color: RED }}> Withdraw </Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View
-          style={styles.titleRow}
-          accessible={true}
-          accessibilityLabel={'Favourite, heading'}
-        >
-          <Text style={styles.text}> Favourites </Text>
-        </View>
-
-        <View style={styles.iconRow}>
-          <TouchableOpacity
-            style={styles.iconButton}
-            accessible={true}
-            accessibilityLabel={'Pay Money to A, double tap'}
-            onPress={() =>
-              navigate('Bill', { pagename: 'Bill Page', payee: 'Singtel' })
-            }
-          >
-            <Image
-              style={styles.icon}
-              source={require('../icons/valerie.png')}
-            />
-            <Text style={styles.iconLabel}> Name </Text>
+        <View style={styles.titleRow}>
+          <TouchableOpacity style={styles.textRow}>
+            <Text style={styles.text}> Favourite </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconButton}
-            accessible={true}
-            accessibilityLabel={'Pay Money to B, double tap'}
-          >
-            <Image
-              style={styles.icon}
-              source={require('../icons/pengfei.png')}
-            />
-            <Text style={styles.iconLabel}> Name </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconButton}
-            accessible={true}
-            accessibilityLabel={'Pay Money to C, double tap'}
-          >
-            <Image style={styles.icon} source={require('../icons/bella.png')} />
-            <Text style={styles.iconLabel}> Name </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconButton}
-            accessible={true}
-            accessibilityLabel={'Pay Money to D, double tap'}
-          >
-            <Image
-              style={styles.icon}
-              source={require('../icons/michelle.png')}
-            />
-            <Text style={styles.iconLabel}> Name </Text>
+          <TouchableOpacity style={styles.extraRow}>
+            <Text style={styles.extra}> Add </Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.iconRow}>
+        <View style={[styles.iconRow, { flex: 2.7 }]}>
+          {favourites /* for option 2 .slice(1, 5)*/
+            .map(p => (
+              <TouchableOpacity
+                key={p.id}
+                style={styles.iconButton}
+                accessibilityLabel={`Pay to ${p.name}`}
+                onPress={() => navigate('Pay', { payees: [p] })}
+              >
+                <View accessible={false} style={styles.favAva}>
+                  <Text style={styles.avaText}>{p.name[0].toUpperCase()}</Text>
+                </View>
+                <Text style={styles.iconLabel}>{p.name.substring(0, 9)}</Text>
+              </TouchableOpacity>
+            ))}
+        </View>
+
+        {
+          // for option 2
+          /* <View style={styles.iconRow}>
           {companies.slice(0, 4).map(c => (
             <TouchableOpacity
               key={c.id}
               style={styles.iconButton}
-              accessible={true}
-              accessibilityLabel={'Pay Money to A, double tap'}
-              onPress={() =>
-                navigate('Bill', { pagename: 'Bill Page', payee: c.company })
-              }
+              accessibilityLabel={`Pay to ${c.company.name}`}
+              onPress={() => navigate('Bill', { payee: c.company })}
             >
-              <Image
-                style={styles.icon}
-                source={require('../icons/valerie.png')}
-              />
-              <Text style={styles.iconLabel}>{c.company.name.slice(0, 9)}</Text>
+              <View accessible={false} style={styles.favAva}>
+                <Text style={styles.avaText}>
+                  {c.company.name[0].toUpperCase()}
+                </Text>
+              </View>
+              <Text style={styles.iconLabel}>
+                {c.company.name.substring(0, 9)}
+              </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </View> */
+        }
 
         <View style={styles.menuRow}>
           <TouchableOpacity
@@ -235,8 +210,6 @@ export const Header = () => (
   </CommonHeader>
 );
 
-// Create component for favourite button, automatically route to pre-filled pay page
-
 const styles = StyleSheet.create({
   //1
   container: {
@@ -251,8 +224,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingLeft: 10,
+    alignItems: 'stretch',
   },
   menuRow: {
     flex: 1,
@@ -262,10 +234,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
   },
   iconRow: {
-    flex: 2,
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  iconButton: {
+    width: '25%',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingBottom: 15,
   },
   balanceRow: {
     flex: 2,
@@ -274,7 +254,20 @@ const styles = StyleSheet.create({
     // borderTopWidth: StyleSheet.hairlineWidth,
     // borderBottomColor: 'lightgrey',
     // borderBottomWidth: StyleSheet.hairlineWidth,
-    backgroundColor: '#FE6D7C',
+    backgroundColor: RED,
+  },
+  textRow: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  extraRow: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: 10,
   },
   //3
   balanceText: {
@@ -291,13 +284,6 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     paddingRight: 15,
   },
-  iconButton: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingBottom: 20,
-  },
   menuButton: {
     flex: 1,
     flexDirection: 'column',
@@ -307,10 +293,20 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   //items
-  text: {
-    fontSize: 28,
-    color: '#FE6D7C',
+  title: {
+    flex: 2,
+    fontSize: 18,
+    color: RED,
     fontWeight: 'bold',
+    paddingLeft: 10,
+    paddingTop: 15,
+  },
+  text: {
+    flex: 2,
+    fontSize: 18,
+    color: RED,
+    fontWeight: 'bold',
+    paddingLeft: 10,
   },
   balanceLabel: {
     fontSize: 20,
@@ -343,6 +339,18 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '100',
   },
+  favAva: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    backgroundColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avaText: {
+    color: 'white',
+    fontSize: 25,
+  },
   menu: {
     height: 25,
     width: 25,
@@ -352,8 +360,13 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '100',
   },
-  //colors:
-  topColor: {
-    backgroundColor: 'crimson',
+  extra: {
+    flex: 1,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    borderRadius: 10,
+    borderColor: RED,
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: 8,
   },
 });
