@@ -98,10 +98,20 @@ export default class Home extends React.Component {
         </View>
 
         <View style={styles.titleRow}>
-          <TouchableOpacity style={styles.textRow}>
+          <View
+            style={styles.textRow}
+            accessible={true}
+            accessibilityLabel="Favourites"
+          >
             <Text style={styles.text}> Favourite </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.extraRow}>
+          </View>
+          <TouchableOpacity
+            style={styles.extraRow}
+            accessible={true}
+            accessibilityLabel="Add new favourite contact"
+            accessibilityComponentType="button"
+            onPress={() => navigate('AddFav')}
+          >
             <Text style={styles.extra}> Add </Text>
           </TouchableOpacity>
         </View>
@@ -151,7 +161,7 @@ export default class Home extends React.Component {
             style={styles.menuButton}
             accessible={true}
             accessibilityLabel={'Home Menu, double tap'}
-            onPress={() => navigate('Home', { pagename: 'Home' })}
+            // onPress={() => navigate('Home', { pagename: 'Home' })}
           >
             <MaterialCommunityIcons
               name="home-outline"

@@ -19,6 +19,7 @@ import SelectNumbers, { Header as PayeeHeader } from './screens/SelectNumbers';
 import RequestConfirmation, {
   Header as RequestCfmHeader,
 } from './screens/RequestConfirmation';
+import AddFav, { Header as AddFavHeader } from './screens/AddFav';
 
 const App = StackNavigator({
   Home: {
@@ -81,6 +82,12 @@ const App = StackNavigator({
     screen: RequestConfirmation,
     navigationOptions: {
       header: <RequestCfmHeader />,
+    },
+  },
+  AddFav: {
+    screen: AddFav,
+    navigationOptions: {
+      header: ({ navigation }) => <AddFavHeader navigation={navigation} />,
     },
   },
 });

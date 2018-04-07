@@ -80,7 +80,6 @@ export default class Pay extends React.Component {
     this.messageInput.focus();
   };
   nextStep = () => {
-    console.log(!this.state.message);
     if (!this.state.amount) {
       if (this.state.focusedElem !== 'amountInput') {
         this.setState({ focusedElem: 'amountInput' });
