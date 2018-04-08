@@ -71,9 +71,8 @@ export default class BillSelect extends React.Component {
             <ListByCategory
               key={k}
               title={k}
-              companies={
-                console.log(filteredCompanies[k]) || filteredCompanies[k]
-              }
+              companies={filteredCompanies[k]}
+              onCompanyPress={this.props.navigation.navigate}
             />
           ))}
         </ScrollView>

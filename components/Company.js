@@ -10,7 +10,7 @@ export const Company = ({ item, onPress }) => (
     accessibilityLabel={`Double tap to choose organisation ${
       item.company.name
     }`}
-    onPress={onPress}
+    onPress={() => onPress('Bill', { payee: item.company })}
     style={styles.company}
   >
     <View accessible={false} style={styles.avatar}>

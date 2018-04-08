@@ -82,7 +82,7 @@ export default class Home extends React.Component {
           <TouchableOpacity
             style={styles.balanceText}
             accessible={true}
-            onPress={() => navigate('Pay', { pagename: 'Pay Page' })}
+            // onPress={() => navigate('Pay', { pagename: 'Pay Page' })}
           >
             <Text style={styles.balanceLabel}> Balance : </Text>
             <Text style={styles.balance}> $100.70 </Text>
