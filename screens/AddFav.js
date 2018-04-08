@@ -23,10 +23,10 @@ export default class AddFav extends React.Component {
   };
 
   search = term => {
-    const contacts = contacts.filter(
+    const con = contacts.filter(
       c => c.name.includes(term) || c.number.includes(term),
     );
-    this.setState({ contacts });
+    this.setState({ contacts: con });
   };
 
   render() {

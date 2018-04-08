@@ -25,9 +25,9 @@ export default class BillSelect extends React.Component {
     this.setState({ searchTerm: term });
   }
   render() {
-    const filteredCompanies = companies.filter(
-      createFilter(this.state.searchTerm, KEYS_TO_FILTERS),
-    );
+    const filteredCompanies = companies
+      .filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+      .sort((a, b) => a.company.name > b.company.name);
     return (
       <View style={styles.container}>
         <CommonHeader customStyle={styles.header}>
