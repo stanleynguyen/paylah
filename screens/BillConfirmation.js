@@ -22,7 +22,7 @@ export default class BillConfirmation extends React.Component {
             style={styles.detailsContainer}
             accessible={true}
             accessibilityLabel={`Pay ${state.params.amount} to ${
-              state.params.payee
+              state.params.payee.name
             } for bill reference ${state.params.message}. Double tap to edit`}
             onPress={() => this.props.navigation.goBack()}
           >

@@ -78,7 +78,7 @@ export default class Bill extends React.Component {
           <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
-            accessibilityLabel={'Paying Bills to: ' + this.state.payee}
+            accessibilityLabel={'Paying Bills to: ' + this.state.payee.name}
             onPress={() => this.props.navigation.navigate('BillSelect')}
           >
             <FontAwesome

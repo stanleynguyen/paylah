@@ -142,7 +142,7 @@ export default class Pay extends React.Component {
           <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
-            accessibilityLabel="Amount"
+            accessibilityLabel={`Amount: ${this.state.amount}`}
             onPress={this.amountFocus}
           >
             <MaterialIcons
@@ -164,7 +164,7 @@ export default class Pay extends React.Component {
           <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
-            accessibilityLabel="Type a message"
+            accessibilityLabel={`Type a message: ${this.state.message}`}
             onPress={this.messageFocus}
           >
             <Feather

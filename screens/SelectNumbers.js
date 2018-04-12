@@ -131,8 +131,9 @@ export default class SelectNumbers extends React.Component {
           <TouchableOpacity
             style={customStyle.doneBtn}
             accessible={true}
-            accessibilityLabel={gotPayees ? 'Disabled done' : 'Done'}
+            accessibilityLabel="Done"
             accessibilityComponentType="button"
+            disabled={!gotPayees}
             onPress={gotPayees ? this.backToPage : () => {}}
           >
             <Text style={{ color: gotPayees ? RED : GREY }}>DONE</Text>
