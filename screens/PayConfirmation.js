@@ -32,7 +32,7 @@ export default class PayConfirmation extends React.Component {
             accessible={true}
             accessibilityLabel={`Pay ${
               state.params.amount
-            } to ${state.params.payees
+            } Singapore Dollars to ${state.params.payees
               .map(p => `${p.name}, `)
               .join('')} with message ${
               state.params.message

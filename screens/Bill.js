@@ -218,6 +218,7 @@ export class Header extends React.Component {
         <View
           style={HeaderStyles.textWrapper}
           accessible={true}
+          ref={i => (this.HeaderElem = i)}
           accessibilityLabel="Pay bill by filling in the fields and review transaction summary with the button at the bottom of the screen"
         >
           <Text style={HeaderStyles.headerText}>Bills Payment</Text>

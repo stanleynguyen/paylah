@@ -29,8 +29,10 @@ export default class BillConfirmation extends React.Component {
           <TouchableOpacity
             style={styles.detailsContainer}
             accessible={true}
-            accessibilityLabel={`Pay ${state.params.amount} to ${
-              state.params.payee
+            accessibilityLabel={`Pay ${
+              state.params.amount
+            } Singapore Dollars to ${
+              state.params.payee.name
             } for bill reference ${state.params.message}. Double tap to edit`}
             onPress={() => this.props.navigation.goBack()}
           >

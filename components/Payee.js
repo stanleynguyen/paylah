@@ -33,15 +33,17 @@ export const PayeeOnPayPage = ({
   showRemove = true,
   requestPage = false,
 }) => (
-  <View
-    accessible={accessible}
-    accessibilityLabel={`${name} ${number}`}
-    style={styles.payeeOnPay}
-  >
-    <View accessible={false} style={styles.avatar}>
-      <Text style={styles.avaTxt}>{name[0].toUpperCase()}</Text>
+  <View accessible={false} style={styles.payeeOnPay}>
+    <View
+      accessible={accessible}
+      accessibilityLabel={`${name} ${number}`}
+      style={styles.payeeInfo}
+    >
+      <View accessible={false} style={styles.avatar}>
+        <Text style={styles.avaTxt}>{name[0].toUpperCase()}</Text>
+      </View>
+      <Text style={styles.name}>{name}</Text>
     </View>
-    <Text style={styles.name}>{name}</Text>
     {showRemove ? (
       <TouchableOpacity
         accessible={accessible}
@@ -109,6 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 10,
   },
   avaTxt: {
     color: WHITE,
@@ -123,5 +126,11 @@ const styles = StyleSheet.create({
     borderBottomColor: GREY,
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  payeeInfo: {
+    flexDirection: 'row',
+    flexGrow: 1,
+    alignItems: 'center',
+    height: '100%',
   },
 });

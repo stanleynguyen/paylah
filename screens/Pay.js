@@ -201,7 +201,7 @@ export default class Pay extends React.Component {
             accessibilityLabel={
               this.state.payees.length === 0
                 ? 'Disabled next button, please choose one or more payee'
-                : this.state.amount
+                : !this.state.amount
                   ? 'Disabled next button, please enter amount'
                   : 'Next'
             }
