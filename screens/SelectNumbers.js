@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  AccessibilityInfo,
+  findNodeHandle,
 } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 
@@ -47,21 +49,42 @@ export default class SelectNumbers extends React.Component {
         : contacts,
   };
 
+  componentDidMount() {
+    const tag = findNodeHandle(this.HeaderElem);
+    setTimeout(() => AccessibilityInfo.setAccessibilityFocus(tag), 100);
+  }
+
   addPayee = p => {
     if (this.state.payees.length >= 5) return;
-    const favourites = this.state.favourites.filter(f => f.number !== p.number);
-    const contacts = this.state.contacts.filter(c => c.number !== p.number);
+    const favourites = this.state.favourites.map(
+      f =>
+        f.number !== p.number ? f : Object.assign({}, f, { selected: true }),
+    );
+    const contacts = this.state.contacts.map(
+      c =>
+        c.number !== p.number ? c : Object.assign({}, c, { selected: true }),
+    );
     const payees = [...this.state.payees, p];
     this.setState({ payees, contacts, favourites });
   };
   removePayee = p => {
     let fav = this.state.favourites;
-    if (favourites.some(f => f.number === p.number)) {
-      fav = [p, ...fav];
+    const favIdx = fav.findIndex(f => f.number === p.number);
+    if (favIdx > -1) {
+      fav = [
+        ...fav.slice(0, favIdx),
+        Object.assign({}, fav[favIdx], { selected: false }),
+        ...fav.slice(favIdx + 1),
+      ];
     }
     let con = this.state.contacts;
-    if (contacts.some(c => c.number === p.number)) {
-      con = [p, ...con];
+    const conIdx = con.findIndex(c => c.number === p.number);
+    if (conIdx > -1) {
+      con = [
+        ...con.slice(0, conIdx),
+        Object.assign({}, con[conIdx], { selected: false }),
+        ...con.slice(conIdx + 1),
+      ];
     }
     const payees = this.state.payees.filter(pe => pe.number !== p.number);
     this.setState({ payees, favourites: fav, contacts: con });
@@ -98,7 +121,7 @@ export default class SelectNumbers extends React.Component {
         <CommonHeader customStyle={customStyle.header}>
           <TouchableOpacity
             accessible={true}
-            accessibilityLabel="Close"
+            accessibilityLabel="Cancel"
             accessibilityComponentType="button"
             onPress={() => this.props.navigation.goBack(null)}
           >
@@ -111,12 +134,13 @@ export default class SelectNumbers extends React.Component {
           </TouchableOpacity>
           <View
             style={HeaderStyles.textWrapper}
+            ref={i => (this.HeaderElem = i)}
             accessible={true}
             accessibilityLabel={
               this.props.navigation.state.params.forPage === 'Pay'
-                ? 'Choose payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
+                ? 'Choose hey one or more payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
                 : this.props.navigation.state.params.forPage === 'Request'
-                  ? 'Choose contact to request from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
+                  ? 'Choose one or more contacts to request from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
                   : ''
             }
           >
@@ -131,11 +155,13 @@ export default class SelectNumbers extends React.Component {
           <TouchableOpacity
             style={customStyle.doneBtn}
             accessible={true}
-            accessibilityLabel={gotPayees ? 'Disabled done' : 'Done'}
+            accessibilityLabel={!gotPayees ? 'Disabled done' : 'Done'}
             accessibilityComponentType="button"
             onPress={gotPayees ? this.backToPage : () => {}}
           >
-            <Text style={{ color: gotPayees ? RED : GREY }}>DONE</Text>
+            <Text accessible={false} style={{ color: gotPayees ? RED : GREY }}>
+              DONE
+            </Text>
           </TouchableOpacity>
         </CommonHeader>
         <TextInput

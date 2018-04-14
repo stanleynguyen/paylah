@@ -7,7 +7,7 @@ import { WHITE, GREY, RED } from '../constants/colors';
 export const Payee = ({ name, number, onPress }) => (
   <TouchableOpacity
     accessible={true}
-    accessibilityLabel={`Double tap to remove ${name}`}
+    accessibilityLabel={`Remove ${name}, double tap`}
     accessibilityComponentType="button"
     style={styles.payee}
     onPress={onPress}
@@ -45,7 +45,7 @@ export const PayeeOnPayPage = ({
     {showRemove ? (
       <TouchableOpacity
         accessible={accessible}
-        accessibilityLabel={`Double tap to remove ${name} from ${
+        accessibilityLabel={`${name}, double tap to remove from ${
           requestPage ? 'requested contacts' : 'payees'
         } list`}
         accessibilityComponentType="button"

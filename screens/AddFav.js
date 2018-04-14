@@ -7,6 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  findNodeHandle,
+  AccessibilityInfo,
 } from 'react-native';
 
 import CommonHeader from '../components/Header';
@@ -53,31 +55,41 @@ export default class AddFav extends React.Component {
   }
 }
 
-export const Header = ({ navigation }) => (
-  <CommonHeader>
-    <TouchableOpacity
-      accessible={true}
-      accessibilityLabel="Close"
-      accessibilityComponentType="button"
-      onPress={() => navigation.goBack(null)}
-    >
-      <EvilIcons
-        style={HeaderStyles.headerIcon}
-        name="close"
-        size={26}
-        color={RED}
-      />
-    </TouchableOpacity>
-    <View
-      style={HeaderStyles.textWrapper}
-      accessible={true}
-      accessibilityLabel="Add a contact to favourite list by searching and choosing from this contact list"
-    >
-      <Text style={HeaderStyles.headerText}>Add To Favourites</Text>
-    </View>
-    <View style={{ width: 18 }} />
-  </CommonHeader>
-);
+export class Header extends React.Component {
+  componentDidMount() {
+    const tag = findNodeHandle(this.HeaderElem);
+    setTimeout(() => AccessibilityInfo.setAccessibilityFocus(tag), 100);
+  }
+  render() {
+    const { navigation } = this.props;
+    return (
+      <CommonHeader>
+        <TouchableOpacity
+          accessible={true}
+          accessibilityLabel="Close"
+          accessibilityComponentType="button"
+          onPress={() => navigation.goBack(null)}
+        >
+          <EvilIcons
+            style={HeaderStyles.headerIcon}
+            name="close"
+            size={26}
+            color={RED}
+          />
+        </TouchableOpacity>
+        <View
+          style={HeaderStyles.textWrapper}
+          ref={i => (this.HeaderElem = i)}
+          accessible={true}
+          accessibilityLabel="Add a contact to favourite list by searching and choosing from this contact list"
+        >
+          <Text style={HeaderStyles.headerText}>Add To Favourites</Text>
+        </View>
+        <View style={{ width: 18 }} />
+      </CommonHeader>
+    );
+  }
+}
 
 const customStyle = StyleSheet.create({
   header: {

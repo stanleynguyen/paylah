@@ -1,9 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+  findNodeHandle,
+  AccessibilityInfo,
+} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { ButtonStyles } from '../components/CommonStyles';
 
 export default class PayDone extends React.Component {
+  componentDidMount() {
+    const tag = findNodeHandle(this.HeaderElem);
+    setTimeout(() => AccessibilityInfo.setAccessibilityFocus(tag), 100);
+  }
   render() {
     const { navigate, state } = this.props.navigation;
     return (
@@ -11,6 +23,7 @@ export default class PayDone extends React.Component {
         <View accessible={false} />
         <View
           accessible={true}
+          ref={i => (this.HeaderElem = i)}
           accessibilityLabel="Transaction successful"
           style={styles.sentContainer}
         >
@@ -23,7 +36,7 @@ export default class PayDone extends React.Component {
           <TouchableOpacity
             style={[ButtonStyles.reviewbtn, { marginBottom: 20 }]}
             accessible={true}
-            accessibilityLabel="History"
+            accessibilityLabel="View transaction history"
             accessibilityComponentType="button"
           >
             <Text style={ButtonStyles.text}>HISTORY</Text>

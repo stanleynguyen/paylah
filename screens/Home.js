@@ -8,6 +8,8 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
+  findNodeHandle,
+  AccessibilityInfo,
 } from 'react-native';
 import {
   FontAwesome,
@@ -57,16 +59,6 @@ export default class Home extends React.Component {
             <MaterialIcons name="message" size={45} />
             <Text style={styles.iconLabel}> Request </Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.iconButton}
-            accessible={true}
-            accessibilityLabel={'Scan QR to Pay, double tap'}
-          >
-            <Ionicons name="md-qr-scanner" size={40} />
-            <Text style={styles.iconLabel}> Scan QR </Text>
-          </TouchableOpacity>
-
           <TouchableOpacity
             style={styles.iconButton}
             accessible={true}
@@ -75,6 +67,14 @@ export default class Home extends React.Component {
           >
             <MaterialIcons name="receipt" size={45} />
             <Text style={styles.iconLabel}> Bills </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconButton}
+            accessible={true}
+            accessibilityLabel={'Scan QR to Pay, double tap'}
+          >
+            <Ionicons name="md-qr-scanner" size={40} />
+            <Text style={styles.iconLabel}> Scan QR </Text>
           </TouchableOpacity>
         </View>
 
@@ -101,7 +101,7 @@ export default class Home extends React.Component {
           <View
             style={styles.textRow}
             accessible={true}
-            accessibilityLabel="Favourites"
+            accessibilityLabel="Favourites contact lists below"
           >
             <Text style={styles.text}> Favourite </Text>
           </View>
@@ -204,21 +204,30 @@ export default class Home extends React.Component {
   }
 }
 
-export const Header = () => (
-  <CommonHeader customStyle={{ justifyContent: 'center' }}>
-    <View
-      style={HeaderStyles.textWrapper}
-      accessible={true}
-      accessibilityLabel="Home Page"
-    >
-      <Image
-        source={logo}
-        style={HeaderStyles.headerImg}
-        resizeMode="contain"
-      />
-    </View>
-  </CommonHeader>
-);
+export class Header extends React.Component {
+  componentDidMount() {
+    const tag = findNodeHandle(this.HeaderElem);
+    setTimeout(() => AccessibilityInfo.setAccessibilityFocus(tag), 100);
+  }
+  render() {
+    return (
+      <CommonHeader customStyle={{ justifyContent: 'center' }}>
+        <View
+          style={HeaderStyles.textWrapper}
+          ref={i => (this.HeaderElem = i)}
+          accessible={true}
+          accessibilityLabel="Home Page"
+        >
+          <Image
+            source={logo}
+            style={HeaderStyles.headerImg}
+            resizeMode="contain"
+          />
+        </View>
+      </CommonHeader>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   //1

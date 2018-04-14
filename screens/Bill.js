@@ -9,6 +9,8 @@ import {
   InputAccessoryView,
   Button,
   KeyboardAvoidingView,
+  findNodeHandle,
+  AccessibilityInfo,
 } from 'react-native';
 import { Foundation, FontAwesome } from '@expo/vector-icons';
 import CommonHeader from '../components/Header';
@@ -19,7 +21,7 @@ import {
   ContainerStyles,
   ButtonStyles,
 } from '../components/CommonStyles';
-import { RED } from '../constants/colors';
+import { RED, GREY } from '../constants/colors';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default class Bill extends React.Component {
@@ -33,7 +35,7 @@ export default class Bill extends React.Component {
       : this.props.navigation.navigate('Home', { pagename: 'Home' }),
     buttonName: 'Next',
     btnDisabled: true,
-    focusedElem: 'amountInput',
+    focusedElem: '',
   };
 
   componentDidMount() {
@@ -42,25 +44,29 @@ export default class Bill extends React.Component {
       : this.payeeInput.focus();
   }
 
+  componentDidUpdate() {
+    if (
+      this.state.amount &&
+      this.state.payee &&
+      this.state.message &&
+      this.state.btnDisabled
+    ) {
+      this.setState({ btnDisabled: false });
+    } else if (
+      (!this.state.amount || !this.state.payee || !this.state.message) &&
+      !this.state.btnDisabled
+    ) {
+      this.setState({ btnDisabled: true });
+    }
+  }
+
+  onElemFocus = e => {
+    this.setState({ focusedElem: e });
+  };
+
   //Decide what the next button do
   nextStep = () => {
-    if (!this.state.amount) {
-      if (this.state.focusedElem !== 'amountInput') {
-        this.setState({ focusedElem: 'amountInput' });
-      } else {
-        this.amountInput.focus();
-      }
-      return this.amountInput.focus();
-    } else if (!this.state.message) {
-      if (this.state.focusedElem !== 'messageInput') {
-        this.setState({ focusedElem: 'messageInput' });
-      } else {
-        this.messageInput.focus();
-      }
-      return this.messageInput.focus();
-    } else if (!this.state.payee) {
-      return this.props.navigation.navigate('BillSelect');
-    }
+    if (this.state.btnDisabled) return;
 
     return this.props.navigation.navigate('BillConfirmation', {
       pagename: 'Confirmation',
@@ -78,7 +84,7 @@ export default class Bill extends React.Component {
           <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
-            accessibilityLabel={'Paying Bills to: ' + this.state.payee}
+            accessibilityLabel={'Paying bills to: ' + this.state.payee.name}
             onPress={() => this.props.navigation.navigate('BillSelect')}
           >
             <FontAwesome
@@ -95,7 +101,10 @@ export default class Bill extends React.Component {
           <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
-            accessibilityLabel={'Enter Amount: ' + this.state.amount}
+            accessibilityLabel={`Amount: ${this.state.amount &&
+              this.state.amount + 'Singapore Dollar'}, text edit${
+              this.state.focusedElem === 'amount' ? ', editing' : ''
+            }`}
             onPress={() => this.amountInput.focus()}
           >
             <MaterialIcons
@@ -113,13 +122,18 @@ export default class Bill extends React.Component {
               ref={i => (this.amountInput = i)}
               underlineColorAndroid={'transparent'}
               onSubmitEditing={this.nextStep}
+              onFocus={this.onElemFocus.bind(this, 'amount')}
             />
           </TouchableOpacity>
 
           <TouchableOpacity
             style={InputGroupStyles.inputgroup}
             accessible={true}
-            accessibilityLabel={'Bill reference number: ' + this.state.message}
+            accessibilityLabel={`Bill reference number: ${this.state.message
+              .split('')
+              .join(' ')}, text edit, ${
+              this.state.focusedElem === 'message' ? 'editing' : ''
+            }`}
             onPress={() => this.messageInput.focus()}
           >
             <MaterialIcons
@@ -140,6 +154,7 @@ export default class Bill extends React.Component {
               ref={i => (this.messageInput = i)}
               underlineColorAndroid={'transparent'}
               onSubmitEditing={this.nextStep}
+              onFocus={this.onElemFocus.bind(this, 'message')}
             />
           </TouchableOpacity>
         </View>
@@ -149,10 +164,25 @@ export default class Bill extends React.Component {
           style={ButtonStyles.btnContainer}
         >
           <TouchableOpacity
-            style={ButtonStyles.reviewbtn}
+            style={[
+              ButtonStyles.reviewbtn,
+              {
+                backgroundColor: this.state.btnDisabled ? GREY : RED,
+              },
+            ]}
             accessible={true}
-            accessibilityLabel="Next"
-            accessibilityComponentType="button"
+            accessibilityLabel={
+              !this.state.payee
+                ? 'Disabled next button, please choose an organisation'
+                : !this.state.amount
+                  ? 'Disabled next button, please enter an amount'
+                  : !this.state.message
+                    ? 'Disabled next button, please enter a bill reference number'
+                    : 'Next'
+            }
+            accessibilityComponentType={
+              this.state.btnDisabled ? 'none' : 'button'
+            }
             onPress={this.nextStep}
           >
             <Text style={ButtonStyles.text}>NEXT</Text>
@@ -163,31 +193,40 @@ export default class Bill extends React.Component {
   }
 }
 
-export const Header = ({ navigation }) => (
-  <CommonHeader>
-    <TouchableOpacity
-      accessible={true}
-      accessibilityLabel="Close"
-      accessibilityComponentType="button"
-      onPress={() => navigation.goBack(null)}
-    >
-      <EvilIcons
-        style={HeaderStyles.headerIcon}
-        name="close"
-        size={26}
-        color={RED}
-      />
-    </TouchableOpacity>
-    <View
-      style={HeaderStyles.textWrapper}
-      accessible={true}
-      accessibilityLabel="Pay bill by filling in the fields and review transaction summary with the button at the bottom of the screen"
-    >
-      <Text style={HeaderStyles.headerText}>Bills Payment</Text>
-    </View>
-    <View style={{ width: 18 }} />
-  </CommonHeader>
-);
+export class Header extends React.Component {
+  componentDidMount() {
+    const tag = findNodeHandle(this.HeaderElem);
+    setTimeout(() => AccessibilityInfo.setAccessibilityFocus(tag), 100);
+  }
+  render() {
+    const { navigation } = this.props;
+    return (
+      <CommonHeader>
+        <TouchableOpacity
+          accessible={true}
+          accessibilityLabel="Close"
+          accessibilityComponentType="button"
+          onPress={() => navigation.goBack(null)}
+        >
+          <EvilIcons
+            style={HeaderStyles.headerIcon}
+            name="close"
+            size={26}
+            color={RED}
+          />
+        </TouchableOpacity>
+        <View
+          style={HeaderStyles.textWrapper}
+          accessible={true}
+          accessibilityLabel="Pay bill by filling in the fields and review transaction summary with the button at the bottom of the screen"
+        >
+          <Text style={HeaderStyles.headerText}>Bills Payment</Text>
+        </View>
+        <View style={{ width: 18 }} />
+      </CommonHeader>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   inputWrapperTop: {

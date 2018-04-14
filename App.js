@@ -9,7 +9,6 @@ import BillSelect from './screens/BillSelect';
 import BillConfirmation, {
   Header as BillCfmHeader,
 } from './screens/BillConfirmation';
-import BillDone from './screens/BillDone';
 import PayConfirmation, {
   Header as PayCfmHeader,
 } from './screens/PayConfirmation';
@@ -46,8 +45,6 @@ const App = StackNavigator({
       header: <BillCfmHeader />,
     },
   },
-  BillDone: { screen: BillDone },
-
   Pay: {
     screen: Pay,
     navigationOptions: {

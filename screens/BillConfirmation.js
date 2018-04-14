@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+  findNodeHandle,
+  AccessibilityInfo,
+} from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -70,14 +78,23 @@ export default class BillConfirmation extends React.Component {
 
 const styles = ConfirmationPageStyles;
 
-export const Header = () => (
-  <CommonHeader>
-    <View
-      accessible={true}
-      accessibilityLabel="Review transaction details and confirm transaction at the bottom of the page"
-      style={{ width: '100%', alignItems: 'center' }}
-    >
-      <Text style={HeaderStyles.headerText}>Confirm Transaction</Text>
-    </View>
-  </CommonHeader>
-);
+export class Header extends React.Component {
+  componentDidMount() {
+    const tag = findNodeHandle(this.HeaderElem);
+    setTimeout(() => AccessibilityInfo.setAccessibilityFocus(tag), 100);
+  }
+  render() {
+    return (
+      <CommonHeader>
+        <View
+          accessible={true}
+          ref={i => (this.HeaderElem = i)}
+          accessibilityLabel="Review transaction details and confirm transaction at the bottom of the page"
+          style={{ width: '100%', alignItems: 'center' }}
+        >
+          <Text style={HeaderStyles.headerText}>Confirm Transaction</Text>
+        </View>
+      </CommonHeader>
+    );
+  }
+}

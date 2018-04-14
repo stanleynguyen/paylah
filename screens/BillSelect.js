@@ -6,6 +6,8 @@ import {
   Button,
   ScrollView,
   TouchableOpacity,
+  findNodeHandle,
+  AccessibilityInfo,
 } from 'react-native';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import companies from '../data/companies';
@@ -21,6 +23,11 @@ export default class BillSelect extends React.Component {
     searchTerm: '',
   };
 
+  componentDidMount() {
+    const tag = findNodeHandle(this.HeaderElem);
+    setTimeout(() => AccessibilityInfo.setAccessibilityFocus(tag), 100);
+  }
+
   searchUpdated(term) {
     this.setState({ searchTerm: term });
   }
@@ -33,7 +40,7 @@ export default class BillSelect extends React.Component {
         <CommonHeader customStyle={styles.header}>
           <TouchableOpacity
             accessible={true}
-            accessibilityLabel="Close"
+            accessibilityLabel="Cancel"
             accessibilityComponentType="button"
             onPress={() => this.props.navigation.goBack(null)}
           >
@@ -46,6 +53,7 @@ export default class BillSelect extends React.Component {
           </TouchableOpacity>
           <View
             style={HeaderStyles.textWrapper}
+            ref={i => (this.HeaderElem = i)}
             accessible={true}
             accessibilityLabel="Choose an organisation by searching in the search box or scrolling through the list of the institution"
           >
@@ -64,9 +72,7 @@ export default class BillSelect extends React.Component {
             <TouchableOpacity
               accessible={true}
               accessibilityComponentType="button"
-              accessibilityLabel={`Double tap to choose organisation ${
-                item.company.name
-              }`}
+              accessibilityLabel={`${item.company.name}, double tap to choose`}
               onPress={() =>
                 this.props.navigation.navigate('Bill', {
                   payee: item.company,

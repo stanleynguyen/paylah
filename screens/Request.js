@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   TextInput,
+  findNodeHandle,
+  AccessibilityInfo,
 } from 'react-native';
 
 import {
@@ -206,31 +208,41 @@ export default class Request extends React.Component {
   }
 }
 
-export const Header = ({ navigation }) => (
-  <CommonHeader>
-    <TouchableOpacity
-      accessible={true}
-      accessibilityLabel="Close"
-      accessibilityComponentType="button"
-      onPress={() => navigation.goBack(null)}
-    >
-      <EvilIcons
-        name="close"
-        style={HeaderStyles.headerIcon}
-        size={26}
-        color={RED}
-      />
-    </TouchableOpacity>
-    <View
-      style={HeaderStyles.textWrapper}
-      accessible={true}
-      accessibilityLabel="Request payment from friends by filling in the fields and review transaction summary with the button at the bottom of the screen"
-    >
-      <Text style={HeaderStyles.headerText}>Request From Friends</Text>
-    </View>
-    <View style={{ width: 18 }} />
-  </CommonHeader>
-);
+export class Header extends React.Component {
+  componentDidMount() {
+    const tag = findNodeHandle(this.HeaderElem);
+    setTimeout(() => AccessibilityInfo.setAccessibilityFocus(tag), 100);
+  }
+  render() {
+    const { navigation } = this.props;
+    return (
+      <CommonHeader>
+        <TouchableOpacity
+          accessible={true}
+          accessibilityLabel="Close"
+          accessibilityComponentType="button"
+          onPress={() => navigation.goBack(null)}
+        >
+          <EvilIcons
+            name="close"
+            style={HeaderStyles.headerIcon}
+            size={26}
+            color={RED}
+          />
+        </TouchableOpacity>
+        <View
+          style={HeaderStyles.textWrapper}
+          ref={i => (this.HeaderElem = i)}
+          accessible={true}
+          accessibilityLabel="Request payment from friends by filling in the fields and review transaction summary with the button at the bottom of the screen"
+        >
+          <Text style={HeaderStyles.headerText}>Request From Friends</Text>
+        </View>
+        <View style={{ width: 18 }} />
+      </CommonHeader>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {

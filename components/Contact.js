@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { GREY, WHITE } from '../constants/colors';
+import Feather from '@expo/vector-icons/Feather';
 
 export const Contactlist = ({ title, contacts, onPayeeChosen }) => (
   <View accessible={false} style={styles.contactList}>
@@ -17,13 +18,15 @@ export const Contactlist = ({ title, contacts, onPayeeChosen }) => (
   </View>
 );
 
-export const Contact = ({ name, number, onPress }) => (
+export const Contact = ({ name, number, onPress, selected }) => (
   <TouchableOpacity
     style={styles.container}
     accessible={true}
-    accessibilityLabel={`Choose ${name} ${number}`}
+    accessibilityLabel={`${name} ${number.split('').join(' ')}, ${
+      selected ? 'selected' : 'double tap to choose'
+    }`}
     accessibilityComponentType="button"
-    onPress={onPress}
+    onPress={selected ? () => {} : onPress}
   >
     <View style={styles.avatar} accessible={false}>
       <Text style={styles.avaText}>{name[0].toUpperCase()}</Text>
@@ -32,6 +35,11 @@ export const Contact = ({ name, number, onPress }) => (
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.number}>{number}</Text>
     </View>
+    {selected && (
+      <View style={styles.tick} accessible={false}>
+        <Feather name="check" size={30} />
+      </View>
+    )}
   </TouchableOpacity>
 );
 
@@ -65,5 +73,9 @@ const styles = StyleSheet.create({
   },
   listTitle: {
     color: GREY,
+  },
+  tick: {
+    marginLeft: 'auto',
+    // marginRight: 5,
   },
 });
