@@ -27,36 +27,43 @@ export default class PayConfirmation extends React.Component {
     return (
       <View style={styles.container} accessible={false}>
         <View accessible={false} style={styles.shadowWrapper}>
-          <TouchableOpacity
-            style={styles.detailsContainer}
-            accessible={true}
-            accessibilityLabel={`Pay ${
-              state.params.amount
-            } Singapore Dollars to ${state.params.payees
-              .map(p => `${p.name}, `)
-              .join('')} with message ${
-              state.params.message
-            }. Double tap to edit`}
-            accessibilityComponentType="button"
-            onPress={() => this.props.navigation.goBack()}
-          >
-            <Feather name="edit" style={styles.edit} size={35} color={RED} />
-            <View style={styles.field} accessible={false}>
+          <View accessible={false} style={styles.detailsContainer}>
+            <TouchableOpacity
+              accessible={true}
+              accessibilityLabel="Edit current transaction"
+              accessibilityComponentType="button"
+              style={styles.edit}
+              onPress={() => this.props.navigation.goBack(null)}
+            >
+              <Feather name="edit" size={35} color={RED} />
+            </TouchableOpacity>
+            <View
+              style={styles.field}
+              accessible={true}
+              accessibilityLabel="Recipients"
+            >
               <SimpleLineIcons name="user" style={styles.fieldIcon} size={32} />
               <Text style={styles.fieldTxt}>Recipients</Text>
             </View>
-            <View style={{ flexGrow: 0 }} accessible={false}>
+
+            <View style={{ flexGrow: 0 }}>
               {state.params.payees.map(p => (
                 <Payee
                   key={p.number}
                   {...p}
-                  accessible={false}
+                  accessible={true}
                   showRemove={false}
                   onPress={() => {}}
                 />
               ))}
             </View>
-            <View style={styles.field} accessible={false}>
+            <View
+              style={styles.field}
+              accessible={true}
+              accessibilityLabel={`Paying ${
+                state.params.amount
+              } Singapore Dollars`}
+            >
               <MaterialIcons
                 name="attach-money"
                 style={styles.fieldIcon}
@@ -64,7 +71,11 @@ export default class PayConfirmation extends React.Component {
               />
               <Text style={styles.fieldTxt}>{state.params.amount}</Text>
             </View>
-            <View style={styles.field} accessible={false}>
+            <View
+              style={styles.field}
+              accessible={true}
+              accessibilityLabel={`Message: ${state.params.message}`}
+            >
               <Feather
                 name="message-square"
                 style={styles.fieldIcon}
@@ -72,7 +83,7 @@ export default class PayConfirmation extends React.Component {
               />
               <Text style={styles.fieldTxt}>{state.params.message}</Text>
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
         <TouchableOpacity
           style={ButtonStyles.reviewbtn}

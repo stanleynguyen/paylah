@@ -26,18 +26,21 @@ export default class BillConfirmation extends React.Component {
     return (
       <View style={styles.container} accessible={false}>
         <View style={styles.shadowWrapper} accessible={false}>
-          <TouchableOpacity
-            style={styles.detailsContainer}
-            accessible={true}
-            accessibilityLabel={`Pay ${
-              state.params.amount
-            } Singapore Dollars to ${
-              state.params.payee.name
-            } for bill reference ${state.params.message}. Double tap to edit`}
-            onPress={() => this.props.navigation.goBack()}
-          >
-            <Feather name="edit" style={styles.edit} size={35} color={RED} />
-            <View style={styles.field} accessible={false}>
+          <View style={styles.detailsContainer} accessible={false}>
+            <TouchableOpacity
+              accessible={true}
+              style={styles.edit}
+              accessibilityLabel="Edit current transaction"
+              accessibilityComponentType="button"
+              onPress={() => this.props.navigation.goBack(null)}
+            >
+              <Feather name="edit" size={35} color={RED} />
+            </TouchableOpacity>
+            <View
+              style={styles.field}
+              accessible={true}
+              accessibilityLabel={`Paying to ${state.params.payee.name}`}
+            >
               <FontAwesome
                 name="building-o"
                 style={styles.fieldIcon}
@@ -45,7 +48,11 @@ export default class BillConfirmation extends React.Component {
               />
               <Text style={styles.fieldTxt}>{state.params.payee.name}</Text>
             </View>
-            <View style={styles.field} accessible={false}>
+            <View
+              style={styles.field}
+              accessible={true}
+              accessibilityLabel={`Amount: ${state.params.amount}`}
+            >
               <MaterialIcons
                 name="attach-money"
                 style={styles.fieldIcon}
@@ -53,7 +60,13 @@ export default class BillConfirmation extends React.Component {
               />
               <Text style={styles.fieldTxt}>{state.params.amount}</Text>
             </View>
-            <View style={styles.field} accessible={false}>
+            <View
+              style={styles.field}
+              accessible={true}
+              accessibilityLabel={`Bill reference number: ${state.params.message
+                .split('')
+                .join(' ')}`}
+            >
               <MaterialIcons
                 name="receipt"
                 style={styles.fieldIcon}
@@ -61,7 +74,7 @@ export default class BillConfirmation extends React.Component {
               />
               <Text style={styles.fieldTxt}>{state.params.message}</Text>
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
 
         <TouchableOpacity

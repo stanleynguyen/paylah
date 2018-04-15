@@ -47,9 +47,9 @@ export const PayeeOnPayPage = ({
     {showRemove ? (
       <TouchableOpacity
         accessible={accessible}
-        accessibilityLabel={`${name}, double tap to remove from ${
+        accessibilityLabel={`Remove ${name} from ${
           requestPage ? 'requested contacts' : 'payees'
-        } list`}
+        } list, double tap`}
         accessibilityComponentType="button"
         onPress={onPress}
         style={{ justifyContent: 'center' }}
