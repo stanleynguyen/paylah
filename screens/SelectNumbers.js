@@ -138,7 +138,7 @@ export default class SelectNumbers extends React.Component {
             accessible={true}
             accessibilityLabel={
               this.props.navigation.state.params.forPage === 'Pay'
-                ? 'Choose hey one or more payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
+                ? 'Choose one or more payees from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
                 : this.props.navigation.state.params.forPage === 'Request'
                   ? 'Choose one or more contacts to request from your contact list in the search bar, from your chosen favourites or scroll through your contact list.'
                   : ''
